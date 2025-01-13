@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.music.PlaylistRecyclerAdapter
 import com.example.music.databinding.FragmentPlaylistsBinding
 
-class PlaylistsFragment : Fragment() {
+class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickListener {
 
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
@@ -22,6 +24,11 @@ class PlaylistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val recyclerView = binding.playlistRecyclerView
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = PlaylistRecyclerAdapter(requireContext(), this)
+        val adapter = recyclerView.adapter as? PlaylistRecyclerAdapter
+        // ну и дальше
     }
 }

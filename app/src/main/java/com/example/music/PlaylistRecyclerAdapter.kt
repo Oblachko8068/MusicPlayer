@@ -8,16 +8,16 @@ import com.example.music.databinding.ItemPlaylistLayoutBinding
 
 class PlaylistRecyclerAdapter(
     private val context: Context,
-    private val itemCLickListener: onPlaylistClickListener,
+    private val itemCLickListener: OnPlaylistClickListener,
 ) : RecyclerView.Adapter<PlaylistRecyclerAdapter.ViewHolder>() {
 
-    interface onPlaylistClickListener {
+    interface OnPlaylistClickListener {
 
     }
 
     class ViewHolder(
         binding: ItemPlaylistLayoutBinding,
-        itemClickListener: onPlaylistClickListener
+        itemClickListener: OnPlaylistClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
