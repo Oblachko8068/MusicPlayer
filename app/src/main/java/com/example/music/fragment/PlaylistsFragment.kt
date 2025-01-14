@@ -24,11 +24,11 @@ class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = binding.playlistRecyclerView
+        /*val recyclerView = binding.playlistRecyclerView
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = PlaylistRecyclerAdapter(requireContext(), this)
-        val adapter = recyclerView.adapter as? PlaylistRecyclerAdapter
+        val adapter = recyclerView.adapter as? PlaylistRecyclerAdapter*/
         // ну и дальше
     }
 }

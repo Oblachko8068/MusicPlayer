@@ -27,11 +27,11 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
     }
 
     private fun setAdapter() {
-        val recyclerView = binding.musicRecyclerView
+        /*val recyclerView = binding.musicRecyclerView
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = MusicRecyclerAdapter(requireContext(), this)
-        val adapter = recyclerView.adapter as? MusicRecyclerAdapter
+        val adapter = recyclerView.adapter as? MusicRecyclerAdapter*/
         // ну и дальше
     }
 }
