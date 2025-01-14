@@ -4,14 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.music.MusicViewModel
+import com.example.music.R
 import com.example.music.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val musicViewModel: MusicViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,15 +28,25 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setAdapter()
+        val adapter: MusicRecyclerAdapter? = setAdapter()
+        setSearchView(adapter)
     }
 
-    private fun setAdapter() {
-        /*val recyclerView = binding.musicRecyclerView
+    private fun setSearchView(adapter: MusicRecyclerAdapter?) {
+        //val searchView = activity?.findViewById<SearchView>(R.id.search_view)
+
+    }
+
+    private fun setAdapter(): MusicRecyclerAdapter? {
+        val recyclerView = binding.musicRecyclerView
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = MusicRecyclerAdapter(requireContext(), this)
-        val adapter = recyclerView.adapter as? MusicRecyclerAdapter*/
-        // ну и дальше
+        recyclerView.adapter = MusicRecyclerAdapter(requireContext(), emptyList(),this)
+        val adapter = recyclerView.adapter as? MusicRecyclerAdapter
+        val musicMediatorLiveData = musicViewModel.getMusicMediatorLiveData()
+        musicMediatorLiveData.observe(viewLifecycleOwner) {
+            adapter?.updateData(it)
+        }
+        return adapter
     }
 }

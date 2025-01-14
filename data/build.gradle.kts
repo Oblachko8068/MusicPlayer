@@ -38,7 +38,7 @@ dependencies {
     //room
     implementation(libs.androidx.room.runtime)
     //noinspection KaptUsageInsteadOfKsp
-    kapt (libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
     //hilt
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)

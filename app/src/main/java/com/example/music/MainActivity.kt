@@ -2,6 +2,7 @@ package com.example.music
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -40,6 +41,16 @@ class MainActivity : AppCompatActivity() {
         setBottomNavigationView()
         binding.buttonSettings.setOnClickListener {
             launchFragment(fragment = SettingsFragment())
+        }
+        binding.getSearchViewButton.setOnClickListener {
+            binding.getSearchViewButton.visibility = View.GONE
+            binding.closeSearchViewButton.visibility = View.VISIBLE
+            binding.searchView.visibility = View.VISIBLE
+        }
+        binding.closeSearchViewButton.setOnClickListener {
+            binding.getSearchViewButton.visibility = View.VISIBLE
+            binding.closeSearchViewButton.visibility = View.GONE
+            binding.searchView.visibility = View.GONE
         }
     }
 

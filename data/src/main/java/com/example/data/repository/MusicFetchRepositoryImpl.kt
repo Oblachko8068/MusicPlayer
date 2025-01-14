@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import com.example.data.model.fromMusicToMusicDbEntity
+import com.example.data.room.MusicDao
 import com.example.domain.model.Music
 import com.example.domain.repository.MusicFetchRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -11,6 +13,7 @@ import java.io.File
 import javax.inject.Inject
 
 class MusicFetchRepositoryImpl @Inject constructor(
+    private val musicDao: MusicDao,
     @ApplicationContext private val appContext: Context
 ): MusicFetchRepository{
 
@@ -75,6 +78,6 @@ class MusicFetchRepositoryImpl @Inject constructor(
             }
             cursor.close()
         }
-        //musicDao.addAllMusicFromPhone(musicList.map { it.fromMusicToMusicDbEntity() })
+        musicDao.addAllMusicFromPhone(musicList.map { it.fromMusicToMusicDbEntity() })
     }
 }
