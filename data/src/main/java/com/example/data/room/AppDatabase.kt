@@ -8,7 +8,8 @@ import com.example.data.model.MusicDbEntity
     version = 1,
     entities = [
         MusicDbEntity::class
-    ]
+    ],
+    exportSchema = false
 )
 
 abstract class AppDatabase : RoomDatabase() {
