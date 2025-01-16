@@ -42,16 +42,6 @@ class MainActivity : AppCompatActivity() {
         binding.buttonSettings.setOnClickListener {
             launchFragment(fragment = SettingsFragment())
         }
-        binding.getSearchViewButton.setOnClickListener {
-            binding.getSearchViewButton.visibility = View.GONE
-            binding.closeSearchViewButton.visibility = View.VISIBLE
-            binding.searchView.visibility = View.VISIBLE
-        }
-        binding.closeSearchViewButton.setOnClickListener {
-            binding.getSearchViewButton.visibility = View.VISIBLE
-            binding.closeSearchViewButton.visibility = View.GONE
-            binding.searchView.visibility = View.GONE
-        }
     }
 
     private fun checkLastPlayedMusic() {

@@ -28,7 +28,8 @@ class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickLis
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = PlaylistRecyclerAdapter(requireContext(), this)
-        val adapter = recyclerView.adapter as? PlaylistRecyclerAdapter*/
+        val adapter = recyclerView.adapter as PlaylistRecyclerAdapter*/
+
         // ну и дальше
     }
 }

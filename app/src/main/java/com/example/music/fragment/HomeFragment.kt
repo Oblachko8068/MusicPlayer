@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.music.MusicViewModel
+import com.example.music.MusicViewModel.Companion.searchTextLiveData
+import com.example.music.MusicViewModel.Companion.setSearchText
 import com.example.music.R
 import com.example.music.databinding.FragmentHomeBinding
 
@@ -33,8 +35,19 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
     }
 
     private fun setSearchView(adapter: MusicRecyclerAdapter?) {
-        //val searchView = activity?.findViewById<SearchView>(R.id.search_view)
+        val searchView = activity?.findViewById<SearchView>(R.id.search_view)
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                setSearchText(newText.orEmpty())
+                return true
+            }
+        })
+        searchTextLiveData.observe(viewLifecycleOwner) {
+            adapter?.updateData(musicViewModel.getFilteredListMusic())
+        }
     }
 
     private fun setAdapter(): MusicRecyclerAdapter? {

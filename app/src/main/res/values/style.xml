@@ -5,6 +5,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:editTextColor">@color/white</item>
+        <item name="android:hint">Ищем</item>
     </style>
 
 </resources>
