@@ -1,4 +1,4 @@
-package com.example.music.fragment
+package com.example.music.homeFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,7 +30,7 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter: MusicRecyclerAdapter? = setAdapter()
+        val adapter: MusicRecyclerAdapter = setAdapter()
         setSearchView(adapter)
     }
 
@@ -50,15 +50,15 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
         }
     }
 
-    private fun setAdapter(): MusicRecyclerAdapter? {
+    private fun setAdapter(): MusicRecyclerAdapter {
         val recyclerView = binding.musicRecyclerView
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = MusicRecyclerAdapter(requireContext(), emptyList(),this)
-        val adapter = recyclerView.adapter as? MusicRecyclerAdapter
+        val adapter = recyclerView.adapter as MusicRecyclerAdapter
         val musicMediatorLiveData = musicViewModel.getMusicMediatorLiveData()
         musicMediatorLiveData.observe(viewLifecycleOwner) {
-            adapter?.updateData(it)
+            adapter.updateData(it)
         }
         return adapter
     }

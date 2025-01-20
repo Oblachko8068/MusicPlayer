@@ -1,4 +1,4 @@
-package com.example.music.fragment
+package com.example.music.homeFragment
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -31,10 +31,12 @@ class MusicRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(currentMusic: Music, context: Context) {
-            Glide.with(context)
-                .load(currentMusic.artUri)
-                .transform(RoundedCorners(18))
-                .into(binding.musicImage)
+            if (currentMusic.artUri.isNotEmpty()){
+                Glide.with(context)
+                    .load(currentMusic.artUri)
+                    .transform(RoundedCorners(18))
+                    .into(binding.musicImage)
+            }
             binding.musicName.text = currentMusic.title
             binding.musicText.text = currentMusic.artist
             binding.prolongation.text = formatDuration(currentMusic.duration)

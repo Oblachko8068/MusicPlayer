@@ -3,11 +3,15 @@ package com.example.data.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.data.model.MusicDbEntity
+import com.example.data.model.PlaylistDbEntity
+import com.example.data.model.PlaylistSongsDbEntity
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [
-        MusicDbEntity::class
+        MusicDbEntity::class,
+        PlaylistDbEntity::class,
+        PlaylistSongsDbEntity::class
     ],
     exportSchema = false
 )
@@ -15,4 +19,8 @@ import com.example.data.model.MusicDbEntity
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getMusicDao(): MusicDao
+
+    abstract fun getPlaylistDao(): PlaylistDao
+
+    abstract fun getPlaylistSongsDao(): PlaylistSongsDao
 }

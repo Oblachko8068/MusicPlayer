@@ -2,16 +2,15 @@ package com.example.music
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.music.databinding.ActivityMainBinding
-import com.example.music.fragment.HomeFragment
+import com.example.music.homeFragment.HomeFragment
 import com.example.music.fragment.MusicPlayerFragment
-import com.example.music.fragment.PlaylistsFragment
+import com.example.music.playlistFragment.PlaylistsFragment
 import com.example.music.fragment.SettingsFragment
 import dagger.hilt.android.AndroidEntryPoint
 

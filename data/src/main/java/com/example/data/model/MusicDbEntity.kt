@@ -17,17 +17,15 @@ data class MusicDbEntity(
     val path: String,
     val artUri: String
 ) {
-    fun toMusicDb(): Music {
-        return Music(
-            id = id,
-            title = title,
-            album = album,
-            artist = artist,
-            duration = duration,
-            path = path,
-            artUri = artUri
-        )
-    }
+    fun toMusicDb(): Music = Music(
+        id = id,
+        title = title,
+        album = album,
+        artist = artist,
+        duration = duration,
+        path = path,
+        artUri = artUri
+    )
 }
 
 fun Music.fromMusicToMusicDbEntity(): MusicDbEntity = MusicDbEntity(
