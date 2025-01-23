@@ -15,7 +15,8 @@ data class MusicDbEntity(
     val artist: String,
     val duration: Long,
     val path: String,
-    val artUri: String
+    val artUri: String,
+    val data: Long
 ) {
     fun toMusicDb(): Music = Music(
         id = id,
@@ -24,7 +25,8 @@ data class MusicDbEntity(
         artist = artist,
         duration = duration,
         path = path,
-        artUri = artUri
+        artUri = artUri,
+        data = data
     )
 }
 
@@ -35,5 +37,6 @@ fun Music.fromMusicToMusicDbEntity(): MusicDbEntity = MusicDbEntity(
     artist = this.artist,
     duration = this.duration,
     path = this.path,
-    artUri = this.artUri
+    artUri = this.artUri,
+    data = this.data
 )

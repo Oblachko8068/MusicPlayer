@@ -13,6 +13,6 @@ interface PlaylistDao {
     @Query("SELECT * FROM playlist")
     fun getAllPlaylistList(): LiveData<List<PlaylistDbEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addNewPlaylist(playlistDbEntity: PlaylistDbEntity)
 }

@@ -48,6 +48,18 @@ class MusicViewModel @Inject constructor(
         }
     }
 
+    fun sortMusicByName() {
+        mediatorLiveData.value = getMusicList().sortedBy { it.title }
+    }
+
+    fun sortMusicByDate() {
+        mediatorLiveData.value = getMusicList().sortedBy { it.data }
+    }
+
+    fun sortMusicByPriority() {
+
+    }
+
     companion object {
         private val _searchTextLiveData = MutableLiveData<String>()
         val searchTextLiveData: LiveData<String> = _searchTextLiveData

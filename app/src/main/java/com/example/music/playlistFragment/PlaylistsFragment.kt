@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.model.Playlist
 import com.example.music.PlaylistViewModel
 import com.example.music.databinding.FragmentPlaylistsBinding
 
@@ -34,7 +35,7 @@ class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickLis
     private fun setAdapter(): PlaylistRecyclerAdapter {
         val recyclerView = binding.playlistRecyclerView
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = PlaylistRecyclerAdapter(requireContext(), emptyList(),this)
         val adapter = recyclerView.adapter as PlaylistRecyclerAdapter
         val playlistMediatorLiveData = playlistViewModel.getPlaylistMediatorLiveData()
@@ -43,4 +44,5 @@ class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickLis
         }
         return adapter
     }
+
 }

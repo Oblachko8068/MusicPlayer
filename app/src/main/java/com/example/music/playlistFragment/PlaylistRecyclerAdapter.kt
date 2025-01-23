@@ -1,11 +1,10 @@
 package com.example.music.playlistFragment
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.domain.model.Playlist
 import com.example.music.R
 import com.example.music.databinding.ItemPlaylistLayoutBinding
@@ -20,14 +19,32 @@ class PlaylistRecyclerAdapter(
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateData(newPlaylistList: List<Playlist>) {
-        playlistList = newPlaylistList
-        notifyDataSetChanged()
+    private class DiffUtilCallback(
+        private val oldPlaylistList: List<Playlist>,
+        private val newPlaylistList: List<Playlist>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldPlaylistList.size
+
+        override fun getNewListSize(): Int = newPlaylistList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldPlaylistList[oldItemPosition].javaClass == newPlaylistList[newItemPosition].javaClass
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldPlaylistList[oldItemPosition].hashCode() == newPlaylistList[newItemPosition].hashCode()
+
     }
-    class ViewHolder(
-        private val binding: ItemPlaylistLayoutBinding,
-        itemClickListener: OnPlaylistClickListener
+
+    fun updateData(newPlaylistList: List<Playlist>) {
+        val diffCallback = DiffUtilCallback(playlistList, newPlaylistList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        playlistList = newPlaylistList
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    inner class ViewHolder(
+        private val binding: ItemPlaylistLayoutBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(currentPlaylist: Playlist, context: Context) {
@@ -39,18 +56,12 @@ class PlaylistRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemPlaylistLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding, itemCLickListener)
+        return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = playlistList.size + 1
+    override fun getItemCount(): Int = playlistList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position == playlistList.size + 1){
-            holder.bind(Playlist(-1, "Новый"), context)
-            holder.itemView.setOnClickListener {
-
-            }
-        }
         val currentPlaylist = playlistList[position]
         holder.bind(currentPlaylist, context)
         holder.itemView.setOnClickListener {

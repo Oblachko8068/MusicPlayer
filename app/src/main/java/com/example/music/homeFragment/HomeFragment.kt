@@ -1,13 +1,18 @@
 package com.example.music.homeFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.model.Music
 import com.example.music.MusicViewModel
 import com.example.music.MusicViewModel.Companion.searchTextLiveData
 import com.example.music.MusicViewModel.Companion.setSearchText
@@ -32,6 +37,38 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
         super.onViewCreated(view, savedInstanceState)
         val adapter: MusicRecyclerAdapter = setAdapter()
         setSearchView(adapter)
+        setSortMusicButton()
+    }
+
+    private fun setSortMusicButton() {
+        val sortButton = activity?.findViewById<ImageButton>(R.id.button_sort)
+        sortButton?.setOnClickListener {
+            val wrapper: Context = ContextThemeWrapper(requireContext(), R.style.CustomPopupMenu)
+            val popupMenu = PopupMenu(wrapper, sortButton)
+            activity?.menuInflater?.inflate(R.menu.sort_menu, popupMenu.menu)
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.sort_by_name -> {
+                        musicViewModel.sortMusicByName()
+                        true
+                    }
+
+                    R.id.sort_by_date -> {
+                        musicViewModel.sortMusicByDate()
+                        true
+                    }
+
+                    R.id.sort_by_priority -> {
+                        musicViewModel.sortMusicByPriority()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        }
     }
 
     private fun setSearchView(adapter: MusicRecyclerAdapter?) {
@@ -61,5 +98,9 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
             adapter.updateData(it)
         }
         return adapter
+    }
+
+    override fun omMusicClickAction(music: Music) {
+
     }
 }

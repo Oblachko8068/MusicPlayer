@@ -15,7 +15,7 @@ import javax.inject.Inject
 class MusicFetchRepositoryImpl @Inject constructor(
     private val musicDao: MusicDao,
     @ApplicationContext private val appContext: Context
-): MusicFetchRepository{
+) : MusicFetchRepository {
 
     @SuppressLint("Range")
     override suspend fun fetchMusic() {
@@ -29,7 +29,8 @@ class MusicFetchRepositoryImpl @Inject constructor(
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.DATE_ADDED,
             MediaStore.Audio.Media.DATA,
-            MediaStore.Audio.Media.ALBUM_ID
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.DATE_ADDED
         )
         val cursor = appContext.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -62,6 +63,8 @@ class MusicFetchRepositoryImpl @Inject constructor(
                             .toString()
                     val uri = Uri.parse("content://media/external/audio/albumart")
                     val artUriC = Uri.withAppendedPath(uri, albumIdC).toString()
+                    val dataAdded =
+                        cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED))
                     val music = Music(
                         id = idC,
                         title = titleC,
@@ -69,7 +72,8 @@ class MusicFetchRepositoryImpl @Inject constructor(
                         artist = artistC,
                         path = pathC,
                         duration = durationC,
-                        artUri = artUriC
+                        artUri = artUriC,
+                        data = dataAdded
                     )
                     val file = File(music.path)
                     if (file.exists())

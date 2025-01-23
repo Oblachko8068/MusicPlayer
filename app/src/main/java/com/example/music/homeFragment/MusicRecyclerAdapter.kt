@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -18,6 +19,7 @@ class MusicRecyclerAdapter(
 
     interface OnMusicClickListener {
 
+        fun omMusicClickAction(music: Music)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -63,9 +65,33 @@ class MusicRecyclerAdapter(
         val currentMusic = musicList[position]
         holder.bind(currentMusic, context)
         holder.itemView.setOnClickListener {
-
+            itemClickListener.omMusicClickAction(currentMusic)
         }
     }
 
     override fun getItemCount(): Int = musicList.size
 }
+
+/*
+
+val diffCallback = DiffUtilCallBack(musicList, newMusicList)
+val diffResult = DiffUtil.calculateDiff(diffCallback)
+diffResult.dispatchUpdatesTo(this)
+
+private class DiffUtilCallBack(
+        private val oldMusicList: List<Music>,
+        private val newMusicList: List<Music>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldMusicList.size
+
+        override fun getNewListSize(): Int = newMusicList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldMusicList[oldItemPosition].javaClass == newMusicList[newItemPosition].javaClass
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldMusicList[oldItemPosition].hashCode() == newMusicList[newItemPosition].hashCode()
+
+    }
+*/
