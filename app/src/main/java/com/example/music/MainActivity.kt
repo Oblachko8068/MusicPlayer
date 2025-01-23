@@ -4,15 +4,18 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.music.databinding.ActivityMainBinding
-import com.example.music.fragment.HomeFragment
+import com.example.music.homeFragment.HomeFragment
 import com.example.music.fragment.MusicPlayerFragment
-import com.example.music.fragment.PlaylistsFragment
+import com.example.music.playlistFragment.PlaylistsFragment
 import com.example.music.fragment.SettingsFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.reflect.Field
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -22,6 +25,24 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        makeView()
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_container, HomeFragment())
+                .commit()
+        }
+        checkLastPlayedMusic()
+        setOnButtonsClickListeners()
+    }
+
+    private fun setOnButtonsClickListeners() {
+        binding.buttonSettings.setOnClickListener {
+            launchFragment(fragment = SettingsFragment())
+        }
+    }
+
+    private fun makeView() {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -30,17 +51,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, HomeFragment())
-                .commit()
-        }
-        checkLastPlayedMusic()
         setBottomNavigationView()
-        binding.buttonSettings.setOnClickListener {
-            launchFragment(fragment = SettingsFragment())
-        }
     }
 
     private fun checkLastPlayedMusic() {

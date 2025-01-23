@@ -1,0 +1,106 @@
+package com.example.music.homeFragment
+
+import android.content.Context
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.model.Music
+import com.example.music.MusicViewModel
+import com.example.music.MusicViewModel.Companion.searchTextLiveData
+import com.example.music.MusicViewModel.Companion.setSearchText
+import com.example.music.R
+import com.example.music.databinding.FragmentHomeBinding
+
+class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+    private val musicViewModel: MusicViewModel by activityViewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val adapter: MusicRecyclerAdapter = setAdapter()
+        setSearchView(adapter)
+        setSortMusicButton()
+    }
+
+    private fun setSortMusicButton() {
+        val sortButton = activity?.findViewById<ImageButton>(R.id.button_sort)
+        sortButton?.setOnClickListener {
+            val wrapper: Context = ContextThemeWrapper(requireContext(), R.style.CustomPopupMenu)
+            val popupMenu = PopupMenu(wrapper, sortButton)
+            activity?.menuInflater?.inflate(R.menu.sort_menu, popupMenu.menu)
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.sort_by_name -> {
+                        musicViewModel.sortMusicByName()
+                        true
+                    }
+
+                    R.id.sort_by_date -> {
+                        musicViewModel.sortMusicByDate()
+                        true
+                    }
+
+                    R.id.sort_by_priority -> {
+                        musicViewModel.sortMusicByPriority()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        }
+    }
+
+    private fun setSearchView(adapter: MusicRecyclerAdapter?) {
+        val searchView = activity?.findViewById<SearchView>(R.id.search_view)
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                setSearchText(newText.orEmpty())
+                return true
+            }
+        })
+        searchTextLiveData.observe(viewLifecycleOwner) {
+            adapter?.updateData(musicViewModel.getFilteredListMusic())
+        }
+    }
+
+    private fun setAdapter(): MusicRecyclerAdapter {
+        val recyclerView = binding.musicRecyclerView
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = MusicRecyclerAdapter(requireContext(), emptyList(),this)
+        val adapter = recyclerView.adapter as MusicRecyclerAdapter
+        val musicMediatorLiveData = musicViewModel.getMusicMediatorLiveData()
+        musicMediatorLiveData.observe(viewLifecycleOwner) {
+            adapter.updateData(it)
+        }
+        return adapter
+    }
+
+    override fun omMusicClickAction(music: Music) {
+
+    }
+}
