@@ -1,6 +1,0 @@
-<!-- res/drawable/custom_popup_background.xml -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@android:color/white" /> <!-- Белый фон, можно изменить -->
-    <corners android:radius="8dp" /> <!-- Закругленные углы -->
-    <stroke android:color="@android:color/darker_gray" android:width="1dp" /> <!-- Тонкая рамка -->
-</shape>

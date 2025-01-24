@@ -4,11 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.domain.model.Music
+import com.example.music.R
 import com.example.music.databinding.ItemMusicLayoutBinding
 
 class MusicRecyclerAdapter(
@@ -33,10 +32,10 @@ class MusicRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(currentMusic: Music, context: Context) {
-            if (currentMusic.artUri.isNotEmpty()){
+            if (currentMusic.artUri.isNotEmpty()) {
                 Glide.with(context)
                     .load(currentMusic.artUri)
-                    .transform(RoundedCorners(18))
+                    .placeholder(R.drawable.icon_music_note)
                     .into(binding.musicImage)
             }
             binding.musicName.text = currentMusic.title

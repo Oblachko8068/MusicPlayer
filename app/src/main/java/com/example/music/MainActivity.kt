@@ -4,18 +4,15 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuPopupHelper
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.music.databinding.ActivityMainBinding
-import com.example.music.homeFragment.HomeFragment
 import com.example.music.fragment.MusicPlayerFragment
-import com.example.music.playlistFragment.PlaylistsFragment
 import com.example.music.fragment.SettingsFragment
+import com.example.music.homeFragment.HomeFragment
+import com.example.music.playlistFragment.PlaylistsFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.reflect.Field
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -33,10 +30,10 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
         checkLastPlayedMusic()
-        setOnButtonsClickListeners()
+        setSettingButtonListener()
     }
 
-    private fun setOnButtonsClickListeners() {
+    private fun setSettingButtonListener() {
         binding.buttonSettings.setOnClickListener {
             launchFragment(fragment = SettingsFragment())
         }
@@ -55,16 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkLastPlayedMusic() {
-        launchPlayerFragment()
-    }
-
-    @SuppressLint("CommitTransaction")
-    private fun launchPlayerFragment() {
-        supportFragmentManager
-            .beginTransaction()
-            .addToBackStack(null)
-            .replace(R.id.music_player_container, MusicPlayerFragment())
-            .commitAllowingStateLoss()
+        launchFragment(MusicPlayerFragment())
     }
 
     private fun setBottomNavigationView() {
@@ -86,7 +74,11 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.fragment_container, fragment)
+            .replace(
+                if (fragment is MusicPlayerFragment) R.id.music_player_container
+                else R.id.fragment_container,
+                fragment
+            )
             .commitAllowingStateLoss()
     }
 }

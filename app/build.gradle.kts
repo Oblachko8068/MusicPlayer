@@ -43,7 +43,7 @@ android {
 dependencies {
     //Glide
     implementation(libs.glide)
-    annotationProcessor(libs.github.compiler)
+    ksp(libs.github.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
