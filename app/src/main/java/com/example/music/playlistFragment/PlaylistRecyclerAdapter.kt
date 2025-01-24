@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.domain.model.Playlist
 import com.example.music.R
 import com.example.music.databinding.ItemPlaylistLayoutBinding
@@ -17,30 +18,12 @@ class PlaylistRecyclerAdapter(
 
     interface OnPlaylistClickListener {
 
-    }
-
-    private class DiffUtilCallback(
-        private val oldPlaylistList: List<Playlist>,
-        private val newPlaylistList: List<Playlist>
-    ) : DiffUtil.Callback() {
-
-        override fun getOldListSize(): Int = oldPlaylistList.size
-
-        override fun getNewListSize(): Int = newPlaylistList.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldPlaylistList[oldItemPosition].javaClass == newPlaylistList[newItemPosition].javaClass
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldPlaylistList[oldItemPosition].hashCode() == newPlaylistList[newItemPosition].hashCode()
-
+        fun onPlaylistClickAction(playlist: Playlist)
     }
 
     fun updateData(newPlaylistList: List<Playlist>) {
-        val diffCallback = DiffUtilCallback(playlistList, newPlaylistList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
         playlistList = newPlaylistList
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(
@@ -48,8 +31,14 @@ class PlaylistRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(currentPlaylist: Playlist, context: Context) {
+            if (currentPlaylist.artUri.isNotEmpty()){
+                Glide.with(context)
+                    .load(currentPlaylist.artUri)
+                    .placeholder(R.drawable.icon_music_note)
+                    .into(binding.playlistImage)
+            }
             binding.playlistName.text = currentPlaylist.name
-            binding.playlistImage.setBackgroundResource(R.drawable.icon_music_pause)
+            //binding.playlistImage.setBackgroundResource(R.drawable.icon_music_pause)
         }
     }
 
@@ -65,7 +54,30 @@ class PlaylistRecyclerAdapter(
         val currentPlaylist = playlistList[position]
         holder.bind(currentPlaylist, context)
         holder.itemView.setOnClickListener {
-
+            itemCLickListener.onPlaylistClickAction(currentPlaylist)
         }
     }
 }
+
+/*
+val diffCallback = DiffUtilCallback(playlistList, newPlaylistList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+diffResult.dispatchUpdatesTo(this)
+
+private class DiffUtilCallback(
+        private val oldPlaylistList: List<Playlist>,
+        private val newPlaylistList: List<Playlist>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldPlaylistList.size
+
+        override fun getNewListSize(): Int = newPlaylistList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldPlaylistList[oldItemPosition].javaClass == newPlaylistList[newItemPosition].javaClass
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldPlaylistList[oldItemPosition].hashCode() == newPlaylistList[newItemPosition].hashCode()
+
+    }
+ */

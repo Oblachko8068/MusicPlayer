@@ -1,23 +1,24 @@
 package com.example.music.homeFragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import androidx.appcompat.view.ContextThemeWrapper
-import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.Music
-import com.example.music.MusicViewModel
-import com.example.music.MusicViewModel.Companion.searchTextLiveData
-import com.example.music.MusicViewModel.Companion.setSearchText
+import com.example.music.homeFragment.MusicViewModel.Companion.searchTextLiveData
+import com.example.music.homeFragment.MusicViewModel.Companion.setSearchText
 import com.example.music.R
 import com.example.music.databinding.FragmentHomeBinding
+import com.example.music.sorting.NEW_SORT_NAME
+import com.example.music.sorting.NEW_SORT_TYPE
+import com.example.music.sorting.SORT_DIALOG_RES
+import com.example.music.sorting.SORT_DIALOG_TAG
+import com.example.music.sorting.SortDialogFragment
 
 class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
 
@@ -43,31 +44,17 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
     private fun setSortMusicButton() {
         val sortButton = activity?.findViewById<ImageButton>(R.id.button_sort)
         sortButton?.setOnClickListener {
-            val wrapper: Context = ContextThemeWrapper(requireContext(), R.style.CustomPopupMenu)
-            val popupMenu = PopupMenu(wrapper, sortButton)
-            activity?.menuInflater?.inflate(R.menu.sort_menu, popupMenu.menu)
-
-            popupMenu.setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.sort_by_name -> {
-                        musicViewModel.sortMusicByName()
-                        true
-                    }
-
-                    R.id.sort_by_date -> {
-                        musicViewModel.sortMusicByDate()
-                        true
-                    }
-
-                    R.id.sort_by_priority -> {
-                        musicViewModel.sortMusicByPriority()
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-            popupMenu.show()
+            val sortDialogFragment =
+                SortDialogFragment.newInstance(musicViewModel.getCurrentSorting(), true)
+            sortDialogFragment.show(parentFragmentManager, SORT_DIALOG_TAG)
+        }
+        parentFragmentManager.setFragmentResultListener(
+            SORT_DIALOG_RES,
+            viewLifecycleOwner
+        ) { _, res ->
+            musicViewModel.sortMusicList(
+                listOf(res.getInt(NEW_SORT_NAME), res.getInt(NEW_SORT_TYPE))
+            )
         }
     }
 
@@ -91,13 +78,18 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
         val recyclerView = binding.musicRecyclerView
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = MusicRecyclerAdapter(requireContext(), emptyList(),this)
+        recyclerView.adapter = MusicRecyclerAdapter(requireContext(), emptyList(), this)
         val adapter = recyclerView.adapter as MusicRecyclerAdapter
         val musicMediatorLiveData = musicViewModel.getMusicMediatorLiveData()
         musicMediatorLiveData.observe(viewLifecycleOwner) {
             adapter.updateData(it)
         }
         return adapter
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        musicViewModel.saveCurrentSorting()
     }
 
     override fun omMusicClickAction(music: Music) {
