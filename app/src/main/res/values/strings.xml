@@ -2,9 +2,14 @@
     <string name="app_name">Music</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string-array name="sort_names">
+    <string-array name="sort_music_titles">
         <item>По имени</item>
         <item>По длительности</item>
+        <item>По дате</item>
+    </string-array>
+
+    <string-array name="sort_playlist_titles">
+        <item>По имени</item>
         <item>По дате</item>
     </string-array>
 </resources>

@@ -2,7 +2,7 @@ package com.example.domain.repository
 
 interface SortingRepository {
 
-    fun getSavedSorting(): List<Int>
+    fun getSavedSorting(isMusicSorting: Boolean): List<Int>
 
-    fun saveLastSorting(sorting: List<Int>)
+    fun saveLastSorting(sorting: List<Int>, isMusicSorting: Boolean)
 }

@@ -10,11 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.Music
-import com.example.music.MusicViewModel
-import com.example.music.MusicViewModel.Companion.searchTextLiveData
-import com.example.music.MusicViewModel.Companion.setSearchText
+import com.example.music.homeFragment.MusicViewModel.Companion.searchTextLiveData
+import com.example.music.homeFragment.MusicViewModel.Companion.setSearchText
 import com.example.music.R
 import com.example.music.databinding.FragmentHomeBinding
+import com.example.music.sorting.NEW_SORT_NAME
+import com.example.music.sorting.NEW_SORT_TYPE
+import com.example.music.sorting.SORT_DIALOG_RES
+import com.example.music.sorting.SORT_DIALOG_TAG
+import com.example.music.sorting.SortDialogFragment
 
 class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
 
@@ -41,7 +45,7 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
         val sortButton = activity?.findViewById<ImageButton>(R.id.button_sort)
         sortButton?.setOnClickListener {
             val sortDialogFragment =
-                SortDialogFragment.newInstance(musicViewModel.getCurrentSorting())
+                SortDialogFragment.newInstance(musicViewModel.getCurrentSorting(), true)
             sortDialogFragment.show(parentFragmentManager, SORT_DIALOG_TAG)
         }
         parentFragmentManager.setFragmentResultListener(

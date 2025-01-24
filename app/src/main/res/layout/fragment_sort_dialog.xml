@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="200dp"
     android:layout_height="wrap_content"
-    tools:context=".homeFragment.SortDialogFragment">
+    tools:context=".sorting.SortDialogFragment">
 
     <ListView
         android:id="@+id/sorting_list_view"

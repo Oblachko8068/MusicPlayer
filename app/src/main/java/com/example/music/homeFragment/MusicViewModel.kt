@@ -1,4 +1,4 @@
-package com.example.music
+package com.example.music.homeFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -24,7 +24,7 @@ class MusicViewModel @Inject constructor(
 
     private var musicLiveData: LiveData<List<Music>> = musicRepository.getMusicList()
     private var mediatorLiveData = MediatorLiveData<List<Music>>()
-    private var currentSorting: List<Int> = sortingRepository.getSavedSorting()
+    private var currentSorting: List<Int> = sortingRepository.getSavedSorting(isMusicSorting = true)
 
     init {
         viewModelScope.launch(coroutineContext) {
@@ -68,7 +68,7 @@ class MusicViewModel @Inject constructor(
     }
 
     fun saveCurrentSorting() {
-        sortingRepository.saveLastSorting(currentSorting)
+        sortingRepository.saveLastSorting(currentSorting, isMusicSorting = true)
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package com.example.music.homeFragment
+package com.example.music.sorting
 
 import android.os.Bundle
 import android.view.Gravity
@@ -18,6 +18,13 @@ const val SORT_TYPE_KEY = "SORT_TYPE_KEY"
 const val NEW_SORT_NAME = "newSortName"
 const val NEW_SORT_TYPE = "newSortType"
 const val SORT_DIALOG_RES = "sortDialogResult"
+
+const val SORT_DIALOG_TAG_PL = "SORT_DIALOG_TAG_PL"
+const val NEW_SORT_NAME_PL = "newSortNamePl"
+const val NEW_SORT_TYPE_PL = "newSortTypePl"
+const val SORT_DIALOG_RES_PL = "sortDialogResultPl"
+
+const val SORT_ENTITY_KEY = "SORT_ENTITY_KEY"
 const val xLocation = 35
 const val yLocation = 128
 
@@ -27,8 +34,7 @@ class SortDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentSortDialogBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         setDialogLocation()
         binding = FragmentSortDialogBinding.inflate(inflater, container, false)
@@ -47,27 +53,37 @@ class SortDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val sortName = arguments?.getInt(SORT_NAME_KEY) ?: 0
         val sortType = arguments?.getInt(SORT_TYPE_KEY) ?: 0
+        val isMusicSorting = arguments?.getBoolean(SORT_ENTITY_KEY) ?: true
         binding.sortingListView.adapter = SortingViewAdapter(
             context = requireContext(),
-            sortNames = resources.getStringArray(R.array.sort_names),
+            sortNames = resources.getStringArray(
+                if (isMusicSorting) R.array.sort_music_titles else R.array.sort_playlist_titles
+            ),
             currentSorting = arrayOf(sortName, sortType)
         )
 
         binding.sortingListView.setOnItemClickListener { _, _, i: Int, _ ->
             val resultData = Bundle()
-            resultData.putInt(NEW_SORT_NAME, i)
-            resultData.putInt(NEW_SORT_TYPE, if (i == sortName) abs(sortType - 1) else 1)
-            setFragmentResult(SORT_DIALOG_RES, resultData)
+            resultData.putInt(if (isMusicSorting) NEW_SORT_NAME else NEW_SORT_NAME_PL, i)
+            resultData.putInt(
+                if (isMusicSorting) NEW_SORT_TYPE else NEW_SORT_TYPE_PL,
+                if (i == sortName) abs(sortType - 1) else 1
+            )
+            setFragmentResult(
+                if (isMusicSorting) SORT_DIALOG_RES else SORT_DIALOG_RES_PL,
+                resultData
+            )
             dismiss()
         }
     }
 
     companion object {
-        fun newInstance(currentSorting: List<Int>): SortDialogFragment =
+        fun newInstance(currentSorting: List<Int>, isMusicSorting: Boolean): SortDialogFragment =
             SortDialogFragment().apply {
                 arguments = Bundle().apply {
                     putInt(SORT_NAME_KEY, currentSorting[0])
                     putInt(SORT_TYPE_KEY, currentSorting[1])
+                    putBoolean(SORT_ENTITY_KEY, isMusicSorting)
                 }
             }
     }
