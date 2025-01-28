@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -37,17 +36,21 @@ class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickLis
         setAdapter()
         setSortPlaylistButton()
         setOnAddButtonClickListener()
+        //setSettingButton()
+    }
+
+    private fun setSettingButton() {
+        TODO("Запуск настроек")
     }
 
     private fun setOnAddButtonClickListener() {
         binding.buttonAddPlaylist.setOnClickListener {
-            launchPlaylistSongsFragment(Playlist(-1, "", ""))
+            launchPlaylistSongsFragment(Playlist(-1, "", ""), true)
         }
     }
 
     private fun setSortPlaylistButton() {
-        val sortButton = activity?.findViewById<ImageButton>(R.id.button_sort)
-        sortButton?.setOnClickListener {
+        binding.buttonSort.setOnClickListener {
             val sortDialogFragment =
                 SortDialogFragment.newInstance(playlistViewModel.getCurrentSorting(), false)
             sortDialogFragment.show(parentFragmentManager, SORT_DIALOG_TAG_PL)
@@ -80,14 +83,15 @@ class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickLis
         playlistViewModel.saveCurrentSorting()
     }
 
-    private fun launchPlaylistSongsFragment(playlist: Playlist) {
+    private fun launchPlaylistSongsFragment(playlist: Playlist, isAddNewPlaylist: Boolean) {
+        val playlistId = if (isAddNewPlaylist) playlistViewModel.getIdForNewPlaylist() else 0
         parentFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.music_player_container, PlaylistSongsFragment.newInstance(playlist))
+            .replace(R.id.fragment_container, PlaylistSongsFragment.newInstance(playlist, playlistId))
             .commit()
     }
 
     override fun onPlaylistClickAction(playlist: Playlist) {
-        launchPlaylistSongsFragment(playlist)
+        launchPlaylistSongsFragment(playlist, false)
     }
 }

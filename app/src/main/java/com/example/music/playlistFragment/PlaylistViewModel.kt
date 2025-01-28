@@ -33,6 +33,8 @@ class PlaylistViewModel @Inject constructor(
 
     fun getCurrentSorting(): List<Int> = currentSorting
 
+    fun getIdForNewPlaylist(): Int = playlistLiveData.value?.maxByOrNull { it.playlistId }?.playlistId?.plus(1) ?: 1
+
     fun sortMusicList(newSorting: List<Int>) {
         val isReverseSorting = newSorting[1]
         var sortingList = when (newSorting[0]) {

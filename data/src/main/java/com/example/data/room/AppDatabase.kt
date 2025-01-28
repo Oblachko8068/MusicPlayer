@@ -7,7 +7,7 @@ import com.example.data.model.PlaylistDbEntity
 import com.example.data.model.PlaylistSongsDbEntity
 
 @Database(
-    version = 4,
+    version = 7,
     entities = [
         MusicDbEntity::class,
         PlaylistDbEntity::class,

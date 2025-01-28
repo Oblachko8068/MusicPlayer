@@ -39,11 +39,15 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
         val adapter: MusicRecyclerAdapter = setAdapter()
         setSearchView(adapter)
         setSortMusicButton()
+        //setSettingButton()
+    }
+
+    private fun setSettingButton() {
+        TODO("Запуск  настроек")
     }
 
     private fun setSortMusicButton() {
-        val sortButton = activity?.findViewById<ImageButton>(R.id.button_sort)
-        sortButton?.setOnClickListener {
+        binding.buttonSort.setOnClickListener {
             val sortDialogFragment =
                 SortDialogFragment.newInstance(musicViewModel.getCurrentSorting(), true)
             sortDialogFragment.show(parentFragmentManager, SORT_DIALOG_TAG)
@@ -59,8 +63,7 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
     }
 
     private fun setSearchView(adapter: MusicRecyclerAdapter?) {
-        val searchView = activity?.findViewById<SearchView>(R.id.search_view)
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean = false
 

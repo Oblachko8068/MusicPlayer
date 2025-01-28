@@ -8,13 +8,15 @@ import com.example.data.model.fromMusicToMusicDbEntity
 import com.example.data.room.MusicDao
 import com.example.domain.model.Music
 import com.example.domain.repository.MusicFetchRepository
+import com.example.domain.repository.PlaylistSongsRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 
 class MusicFetchRepositoryImpl @Inject constructor(
     private val musicDao: MusicDao,
-    @ApplicationContext private val appContext: Context
+    @ApplicationContext private val appContext: Context,
+    private val playlistSongsRepository: PlaylistSongsRepository
 ) : MusicFetchRepository {
 
     @SuppressLint("Range")
@@ -65,6 +67,8 @@ class MusicFetchRepositoryImpl @Inject constructor(
                     val artUriC = Uri.withAppendedPath(uri, albumIdC).toString()
                     val dataAdded =
                         cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED))
+                    val playlistId: Int? = playlistSongsRepository.getAllSongsPlaylist()
+                        .firstOrNull { it.songId == idC }?.playlistId
                     val music = Music(
                         id = idC,
                         title = titleC,
@@ -73,7 +77,8 @@ class MusicFetchRepositoryImpl @Inject constructor(
                         path = pathC,
                         duration = durationC,
                         artUri = artUriC,
-                        data = dataAdded
+                        data = dataAdded,
+                        playlistId = playlistId
                     )
                     val file = File(music.path)
                     if (file.exists())

@@ -18,4 +18,8 @@ class MusicRepositoryImpl @Inject constructor(
     override fun addNewMusic(music: Music) {
         musicDao.addNewMusic(music.fromMusicToMusicDbEntity())
     }
+
+    override fun getMusicListFromPlaylist(playlistId: Int): LiveData<List<Music>> =
+        musicDao.getMusicListByPlaylist(playlistId)
+            .map { musicDbEntities -> musicDbEntities.map { it.toMusicDb() } }
 }
