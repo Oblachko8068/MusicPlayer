@@ -13,6 +13,9 @@ interface PlaylistSongsDao {
     @Query("SELECT * FROM playlist_songs WHERE playlistId = :playlistId")
     fun getAllSongsFromPlaylist(playlistId: Int): LiveData<List<PlaylistSongsDbEntity>>
 
+    @Query("SELECT * FROM playlist_songs")
+    fun getSongsPlaylist(): List<PlaylistSongsDbEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addNewSongToPlaylist(playlistSongsDbEntity: PlaylistSongsDbEntity)
 }

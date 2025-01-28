@@ -7,5 +7,7 @@ interface PlaylistRepository {
 
     fun getPlaylistList(): LiveData<List<Playlist>>
 
-    fun addNewPlaylist(playlistItem: Playlist)
+    suspend fun addNewPlaylist(playlist: Playlist)
+
+    suspend fun updatePlaylist(playlist: Playlist)
 }

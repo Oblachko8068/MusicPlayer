@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.data.model.PlaylistDbEntity
 
 @Dao
@@ -14,5 +15,8 @@ interface PlaylistDao {
     fun getAllPlaylistList(): LiveData<List<PlaylistDbEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addNewPlaylist(playlistDbEntity: PlaylistDbEntity)
+    suspend fun addNewPlaylist(playlistDbEntity: PlaylistDbEntity)
+
+    @Update
+    suspend fun updatePlaylist(playlistDbEntity: PlaylistDbEntity)
 }

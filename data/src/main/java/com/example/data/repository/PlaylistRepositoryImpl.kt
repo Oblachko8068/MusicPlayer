@@ -15,7 +15,11 @@ class PlaylistRepositoryImpl @Inject constructor(
     override fun getPlaylistList(): LiveData<List<Playlist>> = playlistDao.getAllPlaylistList()
         .map { playlistDbEntities -> playlistDbEntities.map { it.toPlaylistDb() } }
 
-    override fun addNewPlaylist(playlistItem: Playlist) {
-        playlistDao.addNewPlaylist(playlistItem.fromPlaylistToPlaylistDbEntity())
+    override suspend fun addNewPlaylist(playlist: Playlist) {
+        playlistDao.addNewPlaylist(playlist.fromPlaylistToPlaylistDbEntity())
+    }
+
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        playlistDao.updatePlaylist(playlist.fromPlaylistToPlaylistDbEntity())
     }
 }

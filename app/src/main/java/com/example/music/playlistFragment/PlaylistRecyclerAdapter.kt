@@ -1,5 +1,6 @@
 package com.example.music.playlistFragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ class PlaylistRecyclerAdapter(
         fun onPlaylistClickAction(playlist: Playlist)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newPlaylistList: List<Playlist>) {
         playlistList = newPlaylistList
         notifyDataSetChanged()

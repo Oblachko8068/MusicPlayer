@@ -10,15 +10,19 @@ import com.example.domain.model.PlaylistSongs
 
 data class PlaylistSongsDbEntity(
     val playlistId: Int,
-    @PrimaryKey val songId: String
+    @PrimaryKey val songId: String,
+    val dataAdded: Long
 ) {
     fun toPlaylistSongsDb(): PlaylistSongs = PlaylistSongs(
         playlistId = playlistId,
-        songId = songId
+        songId = songId,
+        dataAdded = dataAdded
     )
 }
 
-fun PlaylistSongs.fromPlaylistSongsToPlaylistSongsDbEntity(): PlaylistSongsDbEntity = PlaylistSongsDbEntity(
-    playlistId = this.playlistId,
-    songId = this.songId
-)
+fun PlaylistSongs.fromPlaylistSongsToPlaylistSongsDbEntity(): PlaylistSongsDbEntity =
+    PlaylistSongsDbEntity(
+        playlistId = this.playlistId,
+        songId = this.songId,
+        dataAdded = this.dataAdded
+    )

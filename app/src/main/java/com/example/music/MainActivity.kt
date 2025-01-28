@@ -9,7 +9,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.music.databinding.ActivityMainBinding
 import com.example.music.fragment.MusicPlayerFragment
-import com.example.music.fragment.SettingsFragment
 import com.example.music.homeFragment.HomeFragment
 import com.example.music.playlistFragment.PlaylistsFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,13 +29,6 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
         checkLastPlayedMusic()
-        setSettingButtonListener()
-    }
-
-    private fun setSettingButtonListener() {
-        binding.buttonSettings.setOnClickListener {
-            launchFragment(fragment = SettingsFragment())
-        }
     }
 
     private fun makeView() {

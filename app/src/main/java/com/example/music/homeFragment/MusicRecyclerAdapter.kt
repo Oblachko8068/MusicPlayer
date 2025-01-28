@@ -2,6 +2,7 @@ package com.example.music.homeFragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,7 @@ class MusicRecyclerAdapter(
         fun bind(currentMusic: Music, context: Context) {
             if (currentMusic.artUri.isNotEmpty()) {
                 Glide.with(context)
-                    .load(currentMusic.artUri)
+                    .load(Uri.parse(currentMusic.artUri))
                     .placeholder(R.drawable.icon_music_note)
                     .into(binding.musicImage)
             }
