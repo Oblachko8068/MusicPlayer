@@ -31,13 +31,14 @@ const val yLocation = 128
 class SortDialogFragment : DialogFragment() {
 
     override fun getTheme(): Int = R.style.RoundedCornersDialog
-    private lateinit var binding: FragmentSortDialogBinding
+    private var _binding: FragmentSortDialogBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         setDialogLocation()
-        binding = FragmentSortDialogBinding.inflate(inflater, container, false)
+        _binding = FragmentSortDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 

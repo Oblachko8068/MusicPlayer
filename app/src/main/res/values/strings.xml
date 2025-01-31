@@ -12,4 +12,9 @@
         <item>По имени</item>
         <item>По дате</item>
     </string-array>
+
+    <string-array name="options_playlist_songs_fragment">
+        <item>Удалить</item>
+        <item>Чет еще по приколу</item>
+    </string-array>
 </resources>

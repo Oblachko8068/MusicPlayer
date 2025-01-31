@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.domain.model.Playlist
 import com.example.music.R
 import com.example.music.databinding.FragmentPlaylistsBinding
+import com.example.music.fragment.SettingsFragment
 import com.example.music.playlistSongs.PlaylistSongsFragment
 import com.example.music.sorting.NEW_SORT_NAME_PL
 import com.example.music.sorting.NEW_SORT_TYPE_PL
@@ -36,11 +37,16 @@ class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickLis
         setAdapter()
         setSortPlaylistButton()
         setOnAddButtonClickListener()
-        //setSettingButton()
+        setSettingButton()
     }
 
     private fun setSettingButton() {
-        TODO("Запуск настроек")
+        binding.buttonSettings.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container, SettingsFragment())
+                .commit()
+        }
     }
 
     private fun setOnAddButtonClickListener() {
@@ -51,9 +57,8 @@ class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickLis
 
     private fun setSortPlaylistButton() {
         binding.buttonSort.setOnClickListener {
-            val sortDialogFragment =
-                SortDialogFragment.newInstance(playlistViewModel.getCurrentSorting(), false)
-            sortDialogFragment.show(parentFragmentManager, SORT_DIALOG_TAG_PL)
+            SortDialogFragment.newInstance(playlistViewModel.getCurrentSorting(), false)
+                .show(parentFragmentManager, SORT_DIALOG_TAG_PL)
         }
         parentFragmentManager.setFragmentResultListener(
             SORT_DIALOG_RES_PL,
@@ -87,7 +92,10 @@ class PlaylistsFragment : Fragment(), PlaylistRecyclerAdapter.OnPlaylistClickLis
         val playlistId = if (isAddNewPlaylist) playlistViewModel.getIdForNewPlaylist() else 0
         parentFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.fragment_container, PlaylistSongsFragment.newInstance(playlist, playlistId))
+            .replace(
+                R.id.fragment_container,
+                PlaylistSongsFragment.newInstance(playlist, playlistId)
+            )
             .commit()
     }
 
