@@ -8,12 +8,10 @@ import com.example.domain.repository.PlaylistRepository
 import com.example.domain.repository.SortingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
-    private val playlistRepository: PlaylistRepository,
-    private val coroutineContext: CoroutineContext,
+    playlistRepository: PlaylistRepository,
     private val sortingRepository: SortingRepository
 ) : ViewModel() {
 
@@ -33,7 +31,8 @@ class PlaylistViewModel @Inject constructor(
 
     fun getCurrentSorting(): List<Int> = currentSorting
 
-    fun getIdForNewPlaylist(): Int = playlistLiveData.value?.maxByOrNull { it.playlistId }?.playlistId?.plus(1) ?: 1
+    fun getIdForNewPlaylist(): Int =
+        playlistLiveData.value?.maxByOrNull { it.playlistId }?.playlistId?.plus(1) ?: 2
 
     fun sortMusicList(newSorting: List<Int>) {
         val isReverseSorting = newSorting[1]

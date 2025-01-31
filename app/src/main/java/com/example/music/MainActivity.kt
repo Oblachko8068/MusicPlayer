@@ -9,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.music.databinding.ActivityMainBinding
 import com.example.music.fragment.MusicPlayerFragment
-import com.example.music.homeFragment.HomeFragment
+import com.example.music.musicListFragment.MusicListFragment
 import com.example.music.playlistFragment.PlaylistsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_container, HomeFragment())
+                .add(R.id.fragment_container, MusicListFragment())
                 .commit()
         }
         checkLastPlayedMusic()
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setOnItemSelectedListener { item ->
             var selectedFragment: Fragment? = null
             when (item.itemId) {
-                R.id.nav_home -> selectedFragment = HomeFragment()
+                R.id.nav_home -> selectedFragment = MusicListFragment()
                 R.id.nav_playlists -> selectedFragment = PlaylistsFragment()
             }
             if (selectedFragment != null) {

@@ -1,26 +1,26 @@
-package com.example.music.homeFragment
+package com.example.music.musicListFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.Music
-import com.example.music.homeFragment.MusicViewModel.Companion.searchTextLiveData
-import com.example.music.homeFragment.MusicViewModel.Companion.setSearchText
 import com.example.music.R
+import com.example.music.musicListFragment.MusicViewModel.Companion.searchTextLiveData
+import com.example.music.musicListFragment.MusicViewModel.Companion.setSearchText
 import com.example.music.databinding.FragmentHomeBinding
+import com.example.music.fragment.SettingsFragment
 import com.example.music.sorting.NEW_SORT_NAME
 import com.example.music.sorting.NEW_SORT_TYPE
 import com.example.music.sorting.SORT_DIALOG_RES
 import com.example.music.sorting.SORT_DIALOG_TAG
 import com.example.music.sorting.SortDialogFragment
 
-class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
+class MusicListFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -39,11 +39,16 @@ class HomeFragment : Fragment(), MusicRecyclerAdapter.OnMusicClickListener {
         val adapter: MusicRecyclerAdapter = setAdapter()
         setSearchView(adapter)
         setSortMusicButton()
-        //setSettingButton()
+        setSettingButton()
     }
 
     private fun setSettingButton() {
-        TODO("Запуск  настроек")
+        binding.buttonSettings.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container, SettingsFragment())
+                .commit()
+        }
     }
 
     private fun setSortMusicButton() {
