@@ -13,6 +13,9 @@ interface MusicDao {
     @Query("SELECT * FROM music")
     fun getAllMusicList(): LiveData<List<MusicDbEntity>>
 
+    @Query("SELECT * FROM music WHERE playlistId = :playlistId")
+    fun getMusicListByPlaylist(playlistId: Int): LiveData<List<MusicDbEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addNewMusic(musicDbEntity: MusicDbEntity)
 

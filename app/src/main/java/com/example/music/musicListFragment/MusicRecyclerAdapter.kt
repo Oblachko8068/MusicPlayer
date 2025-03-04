@@ -1,13 +1,14 @@
-package com.example.music.fragment
+package com.example.music.musicListFragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.domain.model.Music
+import com.example.music.R
 import com.example.music.databinding.ItemMusicLayoutBinding
 
 class MusicRecyclerAdapter(
@@ -17,8 +18,9 @@ class MusicRecyclerAdapter(
 ) : RecyclerView.Adapter<MusicRecyclerAdapter.ViewHolder>() {
 
     interface OnMusicClickListener {
-
+        fun onMusicClickAction(music: Music)
     }
+
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newMusicList: List<Music>) {
@@ -31,10 +33,12 @@ class MusicRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(currentMusic: Music, context: Context) {
-            Glide.with(context)
-                .load(currentMusic.artUri)
-                .transform(RoundedCorners(18))
-                .into(binding.musicImage)
+            if (currentMusic.artUri.isNotEmpty()) {
+                Glide.with(context)
+                    .load(Uri.parse(currentMusic.artUri))
+                    .placeholder(R.drawable.icon_music_note)
+                    .into(binding.musicImage)
+            }
             binding.musicName.text = currentMusic.title
             binding.musicText.text = currentMusic.artist
             binding.prolongation.text = formatDuration(currentMusic.duration)
@@ -61,9 +65,33 @@ class MusicRecyclerAdapter(
         val currentMusic = musicList[position]
         holder.bind(currentMusic, context)
         holder.itemView.setOnClickListener {
-
+            itemClickListener.onMusicClickAction(currentMusic)
         }
     }
 
     override fun getItemCount(): Int = musicList.size
 }
+
+/*
+
+val diffCallback = DiffUtilCallBack(musicList, newMusicList)
+val diffResult = DiffUtil.calculateDiff(diffCallback)
+diffResult.dispatchUpdatesTo(this)
+
+private class DiffUtilCallBack(
+        private val oldMusicList: List<Music>,
+        private val newMusicList: List<Music>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldMusicList.size
+
+        override fun getNewListSize(): Int = newMusicList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldMusicList[oldItemPosition].javaClass == newMusicList[newItemPosition].javaClass
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldMusicList[oldItemPosition].hashCode() == newMusicList[newItemPosition].hashCode()
+
+    }
+*/

@@ -1,0 +1,7 @@
+<!-- res/drawable/button_no_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/holo_blue_dark" /> <!-- Синий цвет -->
+    <corners android:radius="24dp" />
+    <stroke android:width="2dp" android:color="@android:color/holo_blue_light" /> <!-- Обводка -->
+    <padding android:left="8dp" android:top="4dp" android:right="8dp" android:bottom="4dp" />
+</shape>

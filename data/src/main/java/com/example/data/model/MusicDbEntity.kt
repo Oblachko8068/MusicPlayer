@@ -15,19 +15,21 @@ data class MusicDbEntity(
     val artist: String,
     val duration: Long,
     val path: String,
-    val artUri: String
+    val artUri: String,
+    val data: Long,
+    var playlistId: Int?
 ) {
-    fun toMusicDb(): Music {
-        return Music(
-            id = id,
-            title = title,
-            album = album,
-            artist = artist,
-            duration = duration,
-            path = path,
-            artUri = artUri
-        )
-    }
+    fun toMusicDb(): Music = Music(
+        id = id,
+        title = title,
+        album = album,
+        artist = artist,
+        duration = duration,
+        path = path,
+        artUri = artUri,
+        data = data,
+        playlistId = playlistId
+    )
 }
 
 fun Music.fromMusicToMusicDbEntity(): MusicDbEntity = MusicDbEntity(
@@ -37,5 +39,7 @@ fun Music.fromMusicToMusicDbEntity(): MusicDbEntity = MusicDbEntity(
     artist = this.artist,
     duration = this.duration,
     path = this.path,
-    artUri = this.artUri
+    artUri = this.artUri,
+    data = this.data,
+    playlistId = this.playlistId
 )

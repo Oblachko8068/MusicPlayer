@@ -2,4 +2,60 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- светлые цвета -->
+    <!--кнопки-->
+    <color name="main_button">#000000</color>
+    <!-- фоны-->
+    <color name="main_background">#e3f5fa</color>
+    <color name="blocks_background">#fafeff</color>
+    <!-- текста-->
+    <color name="text_active">#070707</color>
+    <color name="text_of_the_tabs_active">#070707</color>
+    <color name="text_of_the_tabs">#505152</color>
+    <!-- навигатор-->
+    <color name="navigator_background">#D8D8DF</color>
+    <color name="navigator_icons">#000000</color>
+    <color name="header_background">#808185</color>
+    <color name="header_icon">#FFFFFF</color>
+    <!-- звезда -->
+    <color name="star_icon_enable">#0077FF</color>
+    <color name="star_icon_disable">#D1D5DF</color>
+    <!-- выбор качества -->
+    <color name="choose_quality">#FFFFFF</color>
+    <color name="first_all_color">#A0AECD</color>
+    <color name="second_all_color">#5e6163</color>
+
+
+    <!-- темные цвета -->
+    <!--кнопки-->
+    <color name="main_button_dark">#FFFFFF</color>
+    <!-- фоны-->
+    <color name="main_background_dark">#0B0C10</color>
+    <color name="blocks_background_dark">#1F2833</color>
+    <!-- текста -->
+    <color name="text_active_dark">#C5C6C7</color>
+    <color name="text_of_the_tabs_active_dark">#FFFFFF</color>
+    <color name="text_of_the_tabs_dark">#80FFFFFF</color>
+    <!-- навигатор-->
+    <color name="navigator_icons_dark">#FFFFFF</color>
+    <color name="navigator_background_dark">#454549</color>
+    <color name="header_background_dark">#808185</color>
+    <!-- звезда -->
+    <color name="star_icon_disable_dark">#707070</color>
+    <!-- выбор качества -->
+    <color name="choose_quality_dark">#343438</color>
+    <color name="first_all_color_dark">#45A29E</color>
+    <color name="second_all_color_dark">#66FCF1</color>
+
+
+    <!-- разное используемое -->
+    <color name="ic_launcher_background">#FCFBFB</color>
+    <color name="text_active_channel_name">#33FFFFFF</color>
+    <color name="text_active_channel_description">#FFFFFFFF</color>
+    <color name="played_video">#0077FF</color>
+    <color name="unplayed_video_text_color">#75767B</color>
+    <color name="list_view_divider">#8F8A8A</color>
+    <color name="background_of_the_lower_tabs">#0077FF</color>
 </resources>

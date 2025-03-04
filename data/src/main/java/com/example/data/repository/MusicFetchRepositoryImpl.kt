@@ -8,14 +8,16 @@ import com.example.data.model.fromMusicToMusicDbEntity
 import com.example.data.room.MusicDao
 import com.example.domain.model.Music
 import com.example.domain.repository.MusicFetchRepository
+import com.example.domain.repository.PlaylistSongsRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 
 class MusicFetchRepositoryImpl @Inject constructor(
     private val musicDao: MusicDao,
-    @ApplicationContext private val appContext: Context
-): MusicFetchRepository{
+    @ApplicationContext private val appContext: Context,
+    private val playlistSongsRepository: PlaylistSongsRepository
+) : MusicFetchRepository {
 
     @SuppressLint("Range")
     override suspend fun fetchMusic() {
@@ -29,7 +31,8 @@ class MusicFetchRepositoryImpl @Inject constructor(
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.DATE_ADDED,
             MediaStore.Audio.Media.DATA,
-            MediaStore.Audio.Media.ALBUM_ID
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.DATE_ADDED
         )
         val cursor = appContext.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -62,6 +65,10 @@ class MusicFetchRepositoryImpl @Inject constructor(
                             .toString()
                     val uri = Uri.parse("content://media/external/audio/albumart")
                     val artUriC = Uri.withAppendedPath(uri, albumIdC).toString()
+                    val dataAdded =
+                        cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED))
+                    val playlistId: Int? = playlistSongsRepository.getAllSongsPlaylist()
+                        .firstOrNull { it.songId == idC }?.playlistId
                     val music = Music(
                         id = idC,
                         title = titleC,
@@ -69,7 +76,9 @@ class MusicFetchRepositoryImpl @Inject constructor(
                         artist = artistC,
                         path = pathC,
                         duration = durationC,
-                        artUri = artUriC
+                        artUri = artUriC,
+                        data = dataAdded,
+                        playlistId = playlistId
                     )
                     val file = File(music.path)
                     if (file.exists())

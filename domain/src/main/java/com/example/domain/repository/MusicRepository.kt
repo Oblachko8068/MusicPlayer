@@ -8,4 +8,6 @@ interface MusicRepository {
     fun getMusicList(): LiveData<List<Music>>
 
     fun addNewMusic(music: Music)
+
+    fun getMusicListFromPlaylist(playlistId: Int): LiveData<List<Music>>
 }

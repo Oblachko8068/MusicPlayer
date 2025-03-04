@@ -43,7 +43,11 @@ android {
 dependencies {
     //Glide
     implementation(libs.glide)
-    annotationProcessor(libs.github.compiler)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.session)
+    implementation(libs.androidx.runtime.saved.instance.state)
+    ksp(libs.github.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -59,6 +63,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     //fragment
     implementation(libs.androidx.fragment.ktx)
+
+    implementation(libs.exoplayer.core)
+    implementation(libs.exoplayer.ui)
+    implementation(libs.extension.mediasession)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
