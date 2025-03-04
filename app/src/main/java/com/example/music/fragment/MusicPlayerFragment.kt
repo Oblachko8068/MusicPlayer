@@ -65,10 +65,22 @@ class MusicPlayerFragment : Fragment() {
                 Toast.makeText(requireContext(), "Service not available", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.nextMusic.setOnClickListener {
+            musicService?.playNext() ?: run {
+                Toast.makeText(requireContext(), "Service not available", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.prevMusic.setOnClickListener {
+            musicService?.playPrevious() ?: run {
+                Toast.makeText(requireContext(), "Service not available", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun updatePlayButton(isPlaying: Boolean) {
-        val icon = if (isPlaying) R.drawable.icon_music_pause else R.drawable.icon_music_pause
+        val icon = if (isPlaying) R.drawable.icon_music_pause else R.drawable.icon_music_play
         binding.startStopMusic.setImageResource(icon)
     }
 

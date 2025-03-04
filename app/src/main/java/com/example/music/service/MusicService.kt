@@ -1,11 +1,7 @@
 package com.example.music.service
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
-import android.content.Intent
+import android.app.*
+import android.content.*
 import android.graphics.Bitmap
 import android.os.Binder
 import android.os.IBinder
@@ -40,8 +36,8 @@ class MusicService : Service(), MusicPlayerController {
     override fun onCreate() {
         super.onCreate()
         initializePlayer()
-        setupNotification()
         mediaSession = MediaSession.Builder(this, exoPlayer).build()
+        setupNotification()
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
@@ -79,25 +75,28 @@ class MusicService : Service(), MusicPlayerController {
             })
         }.build().apply {
             setPlayer(exoPlayer)
-            setPriority(NotificationCompat.PRIORITY_LOW)
+            setUsePreviousAction(true)
+            setUseNextAction(true)
+            setUsePlayPauseActions(true)
         }
     }
 
     private fun createNotification(): Notification {
-        val channel = NotificationChannel(
-            CHANNEL_ID,
-            "Music Player",
-            NotificationManager.IMPORTANCE_LOW
-        ).apply { setShowBadge(false) }
+    val channel = NotificationChannel(
+        CHANNEL_ID,
+        "Music Player",
+        NotificationManager.IMPORTANCE_LOW
+    ).apply { setShowBadge(false) }
 
-        (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
-            .createNotificationChannel(channel)
+    (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
+        .createNotificationChannel(channel)
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.icon_music_note)
-            .setContentTitle(currentMusic?.title ?: "Music Player")
-            .setContentText(currentMusic?.artist ?: "Unknown Artist")
-            .build()
+    return NotificationCompat.Builder(this, CHANNEL_ID)
+        .setSmallIcon(R.drawable.icon_music_note)
+        .setContentTitle(currentMusic?.title ?: "Music Player")
+        .setContentText(currentMusic?.artist ?: "Unknown Artist")
+        .setOngoing(true)
+        .build()
     }
 
     override val isPlaying: Boolean
@@ -113,13 +112,22 @@ class MusicService : Service(), MusicPlayerController {
 
     override fun stopPlayer() {
         exoPlayer.stop()
+        stopForeground(true)
         stopSelf()
     }
 
-    override fun changeMediaItem(music: Music) {
-        currentMusic = music
-        exoPlayer.setMediaItem(MediaItem.fromUri(music.path))
-        exoPlayer.prepare()
+    override fun playNext() {
+        if (musicList.isNotEmpty()) {
+            currentMusicPosition = (currentMusicPosition + 1) % musicList.size
+            playMusicAtPosition(currentMusicPosition)
+        }
+    }
+
+    override fun playPrevious() {
+        if (musicList.isNotEmpty()) {
+            currentMusicPosition = (currentMusicPosition - 1 + musicList.size) % musicList.size
+            playMusicAtPosition(currentMusicPosition)
+        }
     }
 
     fun playMusicAtPosition(position: Int) {
@@ -131,14 +139,10 @@ class MusicService : Service(), MusicPlayerController {
         }
     }
 
-    override fun playNext() {
-        currentMusicPosition = (currentMusicPosition + 1) % musicList.size
-        playMusicAtPosition(currentMusicPosition)
-    }
-
-    override fun playPrevious() {
-        currentMusicPosition = (currentMusicPosition - 1 + musicList.size) % musicList.size
-        playMusicAtPosition(currentMusicPosition)
+    override fun changeMediaItem(music: Music) {
+        currentMusic = music
+        exoPlayer.setMediaItem(MediaItem.fromUri(music.path))
+        exoPlayer.prepare()
     }
 
     override fun onDestroy() {
